@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
 app.use(
   cors({
+    origin: "https://travel-2p74.vercel.app/",
     origin: "http://localhost:5173", // Allow React app
     methods: "GET , POST , PUT , DELETE ,PATCH, HEAD ",
     allowedHeaders: [
@@ -38,7 +39,7 @@ app.get("/api/users", async (req, res) => {
   const users = await User.find();
   res.json(users);
 });
- 
+
 app.use((req, res, next) => {
   console.log(`Request made to: ${req.originalUrl}`);
   next();
