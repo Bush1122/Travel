@@ -2,19 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "build" }
+      "src": "server.js", // Your main Node.js file
+      "use": "@vercel/node" // Node.js runtime
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "src": "/(.*)", // All routes
+      "dest": "server.js" // Point to your Node.js server
     }
   ]
 }
