@@ -2,6 +2,10 @@ const express = require("express");
 const authRouter = require("./routes/auth/auth-routes");
 const postRouter = require("./routes/post/post-routes");
 const db = require("./models/Connection");
+const { deletepost } = require("./controllers/auth/auth-controller");
+const { authMiddleware } = require("./controllers/auth/auth-controller");
+
+const router = express.Router();
 
 const app = express();
 const cookiesParser = require("cookie-parser");
@@ -11,20 +15,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
 
-app.use(
-  cors({
-    origin: ["https://travel-2p74.vercel.app", "http://localhost:5173"],
-    methods: "GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS",
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: [
+    "https://travel-2p74.vercel.app",
+    "http://localhost:3000", // For development
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Must include DELETE
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+//router.delete("/api/post/deletepost/:id", authMiddleware, deletepost);
+
+app.use(cors(corsOptions));
+app.options("/api/post/deletepost/:id", cors(corsOptions));
 
 // Routes
 app.get("/", (req, res) => {

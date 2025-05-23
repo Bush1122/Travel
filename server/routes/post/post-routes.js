@@ -22,7 +22,7 @@ router.get("/create", authMiddleware, (req, res) => {
 router.post("/postuser/:userId", authMiddleware, getUserPosts);
 router.get("/postuser/:userId", authMiddleware, getUserPosts);
 
-router.delete("/deletepost/:id", authMiddleware, deletepost);
+//router.delete("/deletepost/:id", authMiddleware, deletepost);
 
 router.put("/updatepost/:id", authMiddleware, updatepost);
 

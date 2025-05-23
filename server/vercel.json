@@ -1,15 +1,18 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
-  ],
+  "builds": [{ "src": "server.js", "use": "@vercel/node" }],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "server.js"
-    }
+      "src": "/api/post/deletepost/.*",
+      "methods": ["DELETE", "OPTIONS"],
+      "dest": "server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://travel-2p74.vercel.app",
+        "Access-Control-Allow-Methods": "DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      }
+    },
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }
