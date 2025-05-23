@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://travel-olive-iota.vercel.app/";
+const API_URL = "https://travel-cyan-gamma.vercel.app";
 
 export const deleteFunction = createAsyncThunk(
   "posts/deletePost",
