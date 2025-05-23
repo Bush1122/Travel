@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js", // Your main Node.js file
-      "use": "@vercel/node" // Node.js runtime
+      "src": "server.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)", // All routes
-      "dest": "server.js" // Point to your Node.js server
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }
