@@ -10,11 +10,11 @@ const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
+
 app.use(
   cors({
-    origin: "https://travel-2p74.vercel.app/",
-    origin: "http://localhost:5173", // Allow React app
-    methods: "GET , POST , PUT , DELETE ,PATCH, HEAD ",
+    origin: ["https://travel-2p74.vercel.app", "http://localhost:5173"],
+    methods: "GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS",
     allowedHeaders: [
       "Content-Type",
       "Authorization",
