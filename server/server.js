@@ -2,10 +2,6 @@ const express = require("express");
 const authRouter = require("./routes/auth/auth-routes");
 const postRouter = require("./routes/post/post-routes");
 const db = require("./models/Connection");
-const { deletepost } = require("./controllers/auth/auth-controller");
-const { authMiddleware } = require("./controllers/auth/auth-controller");
-
-const router = express.Router();
 
 const app = express();
 const cookiesParser = require("cookie-parser");
@@ -31,10 +27,7 @@ const corsOptions = {
   ],
 };
 
-//router.delete("/api/post/deletepost/:id", authMiddleware, deletepost);
-
 app.use(cors(corsOptions));
-app.options("/api/post/deletepost/:id", cors(corsOptions));
 
 // Routes
 app.get("/", (req, res) => {
