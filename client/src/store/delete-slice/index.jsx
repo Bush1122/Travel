@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_URL = "https://travel-olive-iota.vercel.app/";
+
 export const deleteFunction = createAsyncThunk(
   "posts/deletePost",
   async (postId, { rejectWithValue, getState }) => {
     try {
       const token = getState().auth.token;
       const response = await axios.delete(
-        `http://localhost:5000/api/post/deletepost/${postId}`,
+        `${API_URL}/api/post/deletepost/${postId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

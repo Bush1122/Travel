@@ -1,14 +1,14 @@
 // store/update-slice/index.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+const API_URL = "https://travel-olive-iota.vercel.app/";
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
   async ({ postId, updatedData }, { getState, rejectWithValue }) => {
     try {
       const token = getState().auth.token || localStorage.getItem("token");
       const response = await axios.put(
-        `http://localhost:5000/api/post/updatepost/${postId}`,
+        `${API_URL}/api/post/updatepost/${postId}`,
         updatedData,
         {
           headers: {

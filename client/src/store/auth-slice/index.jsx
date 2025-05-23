@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://travel-olive-iota.vercel.app/";
 
 const initialState = {
   isAuthenticated: false,

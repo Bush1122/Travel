@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+const API_URL = "https://travel-olive-iota.vercel.app/";
 
 const initialState = {
   posts: [], // Initialize as empty array
@@ -20,7 +21,7 @@ export const createPost = createAsyncThunk(
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/post/create",
+        `${API_URL}/api/post/create`,
         { ...formData, userId },
         {
           headers: {
@@ -49,7 +50,7 @@ export const fetchUserPosts = createAsyncThunk(
       }
 
       const response = await axios.get(
-        `http://localhost:5000/api/post/postuser/${userId}`,
+        `${API_URL}/api/post/postuser/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
