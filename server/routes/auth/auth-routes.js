@@ -14,10 +14,7 @@ router.post("/register", registerUser);
 
 //router.post("/login", loginUser);
 
-router.post("/login", loginUser, (req, res) => {
-  res.header("Access-Control-Allow-Origin", "https://travel-2p74.vercel.app");
-  res.header("Access-Control-Allow-Credentials", "true");
-});
+router.post("/login", loginUser, (req, res) => {});
 
 router.post("/verify", verifyemail);
 
