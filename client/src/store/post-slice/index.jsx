@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const API_URL = "https://travel-cyan-gamma.vercel.app";
+const API_URL = "https://travel-iota-neon.vercel.app";
 
 const initialState = {
   posts: [], // Initialize as empty array
