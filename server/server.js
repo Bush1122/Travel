@@ -28,7 +28,6 @@ app.use(
     credentials: true,
   })
 );
-app.use(cors(corsOptions));
 
 // Routes
 app.get("/", (req, res) => {
