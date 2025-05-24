@@ -11,22 +11,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
 
-const corsOptions = {
-  origin: [
-    "https://travel-2p74.vercel.app",
-    "http://localhost:3000", // For development
-  ],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Must include DELETE
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Cache-Control",
-    "Expires",
-    "Pragma",
-  ],
-};
-
+app.use(
+  cors({
+    origin: [
+      "https://travel-2p74.vercel.app",
+      "http://localhost:3000", // For development
+    ],
+    methods: "GET , POST , PUT , DELETE ,PATCH, HEAD ",
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true,
+  })
+);
 app.use(cors(corsOptions));
 
 // Routes
