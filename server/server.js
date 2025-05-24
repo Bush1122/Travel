@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
 
-// Enhanced CORS configuration
 const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = [
@@ -31,11 +30,23 @@ const corsOptions = {
   maxAge: 86400, // 24 hours
 };
 
-// Apply CORS middleware
 app.use(cors(corsOptions));
-
-// Explicit preflight handler
 app.options("*", cors(corsOptions));
+
+app.use(
+  cors({
+    Origins: ["https://travel-2p74.vercel.app", "http://localhost:3000"], // Allow React app
+    methods: "GET , POST , PUT , DELETE ,PATCH, HEAD ",
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true,
+  })
+);
 
 // Routes
 app.get("/", (req, res) => {
