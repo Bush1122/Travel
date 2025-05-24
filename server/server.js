@@ -11,20 +11,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
 
+// Enhanced CORS configuration
 const corsOptions = {
-  origin: ["https://travel-2p74.vercel.app", "http://localhost:3000"],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "https://travel-2p74.vercel.app",
+      "http://localhost:3000",
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Cache-Control",
-    "Expires",
-    "Pragma",
-  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  exposedHeaders: ["Content-Length", "Authorization"],
+  maxAge: 86400, // 24 hours
 };
 
-// Handle preflight requests
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// Explicit preflight handler
 app.options("*", cors(corsOptions));
 
 // Routes
