@@ -160,6 +160,7 @@ const loginUser = async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "superSecretKey123!",
         sameSite: "None",
+        maxAge: 60 * 60 * 60 * 1000,
       })
       .json({
         success: true,
@@ -174,7 +175,9 @@ const loginUser = async (req, res) => {
       });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "An error occurred" });
+    res
+      .status(500)
+      .json({ success: false, message: "Login failed", error: error.message });
   }
 };
 
