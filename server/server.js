@@ -11,28 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookiesParser());
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      "https://travel-2p74.vercel.app",
-      "http://localhost:3000",
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  exposedHeaders: ["Content-Length", "Authorization"],
-  maxAge: 86400, // 24 hours
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-
 app.use(
   cors({
     Origins: ["https://travel-2p74.vercel.app", "http://localhost:3000"], // Allow React app
