@@ -1,7 +1,7 @@
 // store/update-slice/index.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const API_URL = "https://travel-iota-neon.vercel.app";
+const API_URL = "https://travel-zeta-three.vercel.app";
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
   async ({ postId, updatedData }, { getState, rejectWithValue }) => {
