@@ -13,7 +13,7 @@ app.use(cookiesParser());
 
 app.use(
   cors({
-    Origins: ["https://travel-2p74.vercel.app", "http://localhost:3000"], // Allow React app
+    origin: ["https://travel-2p74.vercel.app", "http://localhost:3000"], // Allow React app
     methods: "GET , POST , PUT , DELETE ,PATCH, HEAD ",
     allowedHeaders: [
       "Content-Type",
