@@ -14,47 +14,86 @@ dotenv.config();
 
 const registerUser = async (req, res) => {
   const { name, email } = req.body;
-  console.log("email, password +reg ", name, email);
-  const existingUser = await Usermodel.findOne({ email });
-  if (existingUser)
-    return res.status(400).json({ message: "Email already exists" });
+  console.log("Registration attempt for:", name, email);
 
-  const emailCode = Math.floor(100000 + Math.random() * 900000).toString();
-  const newUser = new Usermodel({ name, email, emailCode, isVerified: false });
-  await newUser.save();
-
-  console.log("User registered:", newUser);
-
-  // Send Email with Code
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    secure: false,
-    port: 465,
-    debug: true,
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  const mailOptions = {
-    from: process.env.EMAIL,
-    to: email,
-    subject: "Verify Your Email",
-    text: `Your verification code: ${emailCode}`,
-  };
-
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      console.error("Email send error:", err);
-      return res
-        .status(500)
-        .json({ message: "Error sending verification email" });
+  try {
+    // Check for existing user
+    const existingUser = await Usermodel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
     }
-    console.log("Verification email sent:", info);
-  });
 
-  res.json({ message: "Verification code sent to email" });
+    // Generate and save verification code with expiration
+    const emailCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes expiry
+
+    const newUser = new Usermodel({
+      name,
+      email,
+      emailCode,
+      codeExpiry,
+      isVerified: false,
+    });
+
+    await newUser.save();
+    console.log("Verification code saved to DB:", emailCode);
+
+    // Email configuration
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      // Recommended settings for production:
+      pool: true,
+      maxConnections: 1,
+      rateDelta: 20000, // 20 seconds between emails
+      maxMessages: 3,
+    });
+
+    const mailOptions = {
+      from: `"Your App Name" <${process.env.EMAIL}>`,
+      to: email,
+      subject: "Verify Your Email",
+      text: `Your verification code is: ${emailCode}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2 style="color: #333;">Email Verification</h2>
+          <p>Your verification code is: <strong style="font-size: 18px;">${emailCode}</strong></p>
+          <p style="color: #666;">This code will expire in 15 minutes.</p>
+        </div>
+      `,
+    };
+
+    // Send email with proper error handling
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error("Email send failed:", err);
+          // Delete the user if email fails to prevent orphaned records
+          Usermodel.deleteOne({ email }).catch(console.error);
+          reject(err);
+        } else {
+          console.log("Email sent successfully:", info.response);
+          resolve(info);
+        }
+      });
+    });
+
+    return res.json({
+      success: true,
+      message: "Verification code sent to email",
+      emailCode, // Only include in development for testing
+    });
+  } catch (error) {
+    console.error("Registration error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Registration failed",
+      error: error.message,
+    });
+  }
 };
 
 // Step 2  Verify email
